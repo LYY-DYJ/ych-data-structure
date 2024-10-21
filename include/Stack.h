@@ -12,6 +12,7 @@ public:
     Stack(Stack &stack);
     ~Stack();
     bool is_empty();
+    int length();
     bool pop(T &item);
     bool push(T &item);
     bool get_top(T &item);
@@ -48,6 +49,12 @@ template <class T>
 bool Stack<T>::is_empty()
 {
     return top == -1;
+}
+
+template <class T>
+int Stack<T>::length()
+{
+    return top+1
 }
 
 template <class T>
