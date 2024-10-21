@@ -55,7 +55,9 @@ bool Stack<T>::pop(T &item)
 {
     if (top == -1)
     {
+        #ifdef STACK_PRINT
         printf("Underflow!\n");
+        #endif
         return false;
     }
     else
@@ -99,7 +101,9 @@ bool Stack<T>::push(T &item)
 {
     if (top == maxsize - 1)
     {
+        #ifdef STACK_PRINT
         printf("Overflow!\n");
+        #endif
         return 0;
     }
     else
