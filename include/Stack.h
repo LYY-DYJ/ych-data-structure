@@ -12,6 +12,7 @@ public:
     Stack(Stack &stack);
     ~Stack();
     bool is_empty();
+    int length();
     bool pop(T &item);
     bool push(T &item);
     bool get_top(T &item);
@@ -51,13 +52,19 @@ bool Stack<T>::is_empty()
 }
 
 template <class T>
+int Stack<T>::length()
+{
+    return top + 1;
+}
+
+template <class T>
 bool Stack<T>::pop(T &item)
 {
     if (top == -1)
     {
-        #ifdef STACK_PRINT
+#ifdef STACK_PRINT
         printf("Underflow!\n");
-        #endif
+#endif
         return false;
     }
     else
@@ -101,9 +108,9 @@ bool Stack<T>::push(T &item)
 {
     if (top == maxsize - 1)
     {
-        #ifdef STACK_PRINT
+#ifdef STACK_PRINT
         printf("Overflow!\n");
-        #endif
+#endif
         return 0;
     }
     else
