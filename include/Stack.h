@@ -13,8 +13,9 @@ public:
     ~Stack();
     bool is_empty();
     bool pop(T &item);
-    bool push(T item);
+    bool push(T &item);
     bool get_top(T &item);
+    bool modify_top(T &item);
 };
 
 template <class T>
@@ -80,7 +81,21 @@ bool Stack<T>::get_top(T &item)
 }
 
 template <class T>
-bool Stack<T>::push(T item)
+bool Stack<T>::modify_top(T &item)
+{
+    if (top == -1)
+    {
+        return false;
+    }
+    else
+    {
+        sp[top] = item;
+        return true;
+    }
+}
+
+template <class T>
+bool Stack<T>::push(T &item)
 {
     if (top == maxsize - 1)
     {
