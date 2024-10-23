@@ -96,3 +96,12 @@ void Polygon::print(std::ostream& os) const
     os<<"{type:Polygon,pointlist:"<<_point_list<<"}";
 }
 // Polygon
+
+
+//Triangle
+Triangle::Triangle(const Point* p):Polygon(3,p){}
+void Triangle::print(std::ostream &os) const
+{
+    os<<"{type:Triangle,pointlist:"<<_point_list<<"}";
+}
+//Triangle

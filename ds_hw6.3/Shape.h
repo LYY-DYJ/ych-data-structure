@@ -54,5 +54,12 @@ public:
     List<Point>& point_list();
     double area() const;
     double perimeter() const;
-    void print(std::ostream &os) const;
+    void print(std::ostream &os=std::cout) const;
+};
+
+class Triangle:public Polygon
+{
+public:
+    Triangle(const Point*);
+    void print(std::ostream &os=std::cout) const;
 };
