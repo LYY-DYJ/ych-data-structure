@@ -1,12 +1,12 @@
 MAIN_NAME?=main.out
 
 CXX=g++
-CXXFLAGS=-g -Wall -Werror
+CXXFLAGS=-g -Wall #-Werror
 
 SRC_DIR?=./
 INC_DIR?=./
-SRCS=$(shell find $(abspath $(SRC_DIR)) -name "*.c" -or -name "*.cpp" -or -name "*.cc")
-HEADERS=$(shell find $(abspath $(INC_DIR)) -name "*.h")
+SRCS=$(shell find $(abspath $(SRC_DIR)) -name "*.c" -or -name "*.cpp" -or -name "*.cc" -maxdepth 1)
+HEADERS=$(shell find $(abspath $(INC_DIR)) -name "*.h" -maxdepth 1)
 
 INC_FLAG=$(addprefix -I, $(INC_DIR))
 CXXFLAGS+=$(INC_FLAG)
