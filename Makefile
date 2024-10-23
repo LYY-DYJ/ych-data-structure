@@ -1,7 +1,7 @@
 MAIN_NAME?=main.out
 
 CXX=g++
-CXXFLAGS=-g -Wall #-Werror
+CXXFLAGS=-g -Wall -Werror -fdiagnostics-color=always
 
 SRC_DIR?=./
 INC_DIR?=./
