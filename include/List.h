@@ -9,35 +9,64 @@ private:
     void upscaling();
 
 public:
-    List(int size);
+    List();
+    List(const List& l);
+    List& operator=(const List& l);
     ~List();
     // 判断数列是否为空
     bool is_empty();
     // 返回数列的长度
     int length();
     // 在数列末尾添加元素
-    void append(T &value);
+    void append(const T &value);
     // 在数列中位置p插入元素
-    void insert(int p, T &value);
+    void insert(int p,const T &value);
     // 移除数列中位置p的元素
     bool remove(int p);
     // 设置数列中位置p的元素
-    void set_value(int p, T &value);
+    void set_value(int p,const T &value);
     // 查询数列中位置p的元素
-    bool get_value(int p, T &value);
+    bool get_value(int p,T &value);
     // 查找数列中的元素，如果有，返回1并通过参数返回位置，否则返回0
-    bool find_value(int &p, T &value);
+    bool find_value(int &p,const T &value);
     void print(std::ostream& os=std::cout);
     template<typename TT>
     friend std::ostream& operator<<(std::ostream& os, List<TT> &list);
 };
 
+#define INITIAL_LIST_MAXSIZE 8
 template <class T>
-List<T>::List(int size)
+List<T>::List()
 {
-    maxsize = size;
+    maxsize = INITIAL_LIST_MAXSIZE;
     listp = new T[maxsize];
     curlen = 0;
+}
+#undef INITIAL_LIST_MAXSIZE
+
+template <class T>
+List<T>::List(const List& l)
+{
+    maxsize=l.maxsize;
+    listp = new T[maxsize];
+    curlen = l.curlen;
+    for(int i=0;i<curlen;i++)
+    {
+        listp[i]=l.listp[i];
+    }
+}
+
+template <class T>
+List<T>& List<T>::operator=(const List& l)
+{
+    maxsize=l.maxsize;
+    listp = new T[maxsize];
+    curlen = l.curlen;
+    for(int i=0;i<curlen;i++)
+    {
+        listp[i]=l.listp[i];
+    }
+    return *this;
 }
 
 template <class T>
@@ -73,7 +102,7 @@ int List<T>::length()
 }
 
 template <class T>
-void List<T>::append(T &value)
+void List<T>::append(const T &value)
 {
     if (curlen == maxsize)
     {
@@ -84,7 +113,7 @@ void List<T>::append(T &value)
 }
 
 template <class T>
-void List<T>::insert(int p, T &value)
+void List<T>::insert(int p,const T &value)
 {
     while (p >= maxsize || curlen == maxsize)
     {
@@ -111,7 +140,7 @@ void List<T>::insert(int p, T &value)
 }
 
 template <class T>
-void List<T>::set_value(int p, T &value)
+void List<T>::set_value(int p,const T &value)
 {
     while (p >= maxsize || curlen == maxsize)
     {
@@ -147,7 +176,7 @@ bool List<T>::get_value(int p, T &value)
 }
 
 template <class T>
-bool List<T>::find_value(int &p, T &value)
+bool List<T>::find_value(int &p,const T &value)
 {
     int i;
     for (i = 0; i < curlen && listp[i] != value; i++)
