@@ -11,7 +11,7 @@ private:
 public:
     List();
     List(const List& l);
-    List& operator=(const List& l);
+    List& operator=(List& l);
     ~List();
     // 判断数列是否为空
     bool is_empty();
@@ -19,15 +19,20 @@ public:
     int length();
     // 在数列末尾添加元素
     void append(const T &value);
+    void append(const T &value);
     // 在数列中位置p插入元素
+    void insert(int p,const T &value);
     void insert(int p,const T &value);
     // 移除数列中位置p的元素
     bool remove(int p);
     // 设置数列中位置p的元素
     void set_value(int p,const T &value);
+    void set_value(int p,const T &value);
     // 查询数列中位置p的元素
     bool get_value(int p,T &value);
+    bool get_value(int p,T &value);
     // 查找数列中的元素，如果有，返回1并通过参数返回位置，否则返回0
+    bool find_value(int &p,const T &value);
     bool find_value(int &p,const T &value);
     void print(std::ostream& os=std::cout);
     template<typename TT>
@@ -35,9 +40,12 @@ public:
 };
 
 #define INITIAL_LIST_MAXSIZE 8
+#define INITIAL_LIST_MAXSIZE 8
 template <class T>
 List<T>::List()
+List<T>::List()
 {
+    maxsize = INITIAL_LIST_MAXSIZE;
     maxsize = INITIAL_LIST_MAXSIZE;
     listp = new T[maxsize];
     curlen = 0;
@@ -57,7 +65,7 @@ List<T>::List(const List& l)
 }
 
 template <class T>
-List<T>& List<T>::operator=(const List& l)
+List<T>& List<T>::operator=(List& l)
 {
     maxsize=l.maxsize;
     listp = new T[maxsize];
@@ -103,6 +111,7 @@ int List<T>::length()
 
 template <class T>
 void List<T>::append(const T &value)
+void List<T>::append(const T &value)
 {
     if (curlen == maxsize)
     {
@@ -113,6 +122,7 @@ void List<T>::append(const T &value)
 }
 
 template <class T>
+void List<T>::insert(int p,const T &value)
 void List<T>::insert(int p,const T &value)
 {
     while (p >= maxsize || curlen == maxsize)
@@ -140,6 +150,7 @@ void List<T>::insert(int p,const T &value)
 }
 
 template <class T>
+void List<T>::set_value(int p,const T &value)
 void List<T>::set_value(int p,const T &value)
 {
     while (p >= maxsize || curlen == maxsize)
@@ -176,6 +187,7 @@ bool List<T>::get_value(int p, T &value)
 }
 
 template <class T>
+bool List<T>::find_value(int &p,const T &value)
 bool List<T>::find_value(int &p,const T &value)
 {
     int i;
