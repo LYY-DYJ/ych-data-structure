@@ -1,13 +1,16 @@
 #include<iostream>
 #include<Shape.h>
 
-#define P Shape::Point
+#define Pt Shape::Point
 
 int main()
 {
-    Circle c(1.0,P(1,2));
-    std::cout<<c<<std::endl;
-    std::cout<<c.radius()<<" "<<c.center()<<std::endl;
-    std::cout<<c.area()<<" "<<c.perimeter()<<std::endl;
-    return 0;
+    Pt points[]={Pt(1,1),Pt(3,1),Pt(4,2),Pt(2,2)};
+    Polygon polygon(4,points);
+    Polygon another_polygon;
+    another_polygon.point_list().append(Pt(0,0));
+    another_polygon.point_list().append(Pt(4,0));
+    another_polygon.point_list().append(Pt(0,3));
+    std::cout<<polygon<<" "<<polygon.area()<<" "<<polygon.perimeter()<<std::endl;
+    std::cout<<another_polygon<<" "<<another_polygon.area()<<" "<<another_polygon.perimeter()<<std::endl;
 }

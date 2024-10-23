@@ -1,4 +1,4 @@
-#include<iostream>
+#include <iostream>
 template <class T>
 class List
 {
@@ -10,28 +10,31 @@ private:
 
 public:
     List();
-    List(const List& l);
-    List& operator=(const List& l);
+    List(const List &l);
+    List(int n, const T *);
+    List &operator=(const List &l);
     ~List();
     // 判断数列是否为空
-    bool is_empty();
+    bool is_empty() const;
     // 返回数列的长度
-    int length();
+    int length() const;
     // 在数列末尾添加元素
     void append(const T &value);
     // 在数列中位置p插入元素
-    void insert(int p,const T &value);
-    // 移除数列中位置p的元素
+    void insert(int p, const T &value);
+    // 移除数列中位置p的元素(不要使用还没写完)
     bool remove(int p);
     // 设置数列中位置p的元素
-    void set_value(int p,const T &value);
+    void set_value(int p, const T &value);
     // 查询数列中位置p的元素
-    bool get_value(int p,T &value);
+    bool get_value(int p, T &value) const;
     // 查找数列中的元素，如果有，返回1并通过参数返回位置，否则返回0
-    bool find_value(int &p,const T &value);
-    void print(std::ostream& os=std::cout);
-    template<typename TT>
-    friend std::ostream& operator<<(std::ostream& os, List<TT> &list);
+    bool find_value(int &p, const T &value) const;
+    // 打印列表
+    void print(std::ostream &os = std::cout) const;
+    // 流输出重载
+    template <typename TT>
+    friend std::ostream &operator<<(std::ostream &os, const List<TT> &list);
 };
 
 #define INITIAL_LIST_MAXSIZE 8
@@ -45,26 +48,37 @@ List<T>::List()
 #undef INITIAL_LIST_MAXSIZE
 
 template <class T>
-List<T>::List(const List& l)
+List<T>::List(const List &l)
 {
-    maxsize=l.maxsize;
+    maxsize = l.maxsize;
     listp = new T[maxsize];
     curlen = l.curlen;
-    for(int i=0;i<curlen;i++)
+    for (int i = 0; i < curlen; i++)
     {
-        listp[i]=l.listp[i];
+        listp[i] = l.listp[i];
+    }
+}
+template <class T>
+List<T>::List(int n, const T *l)
+{
+    maxsize = 2 * n;
+    listp = new T[maxsize];
+    curlen = n;
+    for (int i = 0; i < curlen; i++)
+    {
+        listp[i] = l[i];
     }
 }
 
 template <class T>
-List<T>& List<T>::operator=(const List& l)
+List<T> &List<T>::operator=(const List &l)
 {
-    maxsize=l.maxsize;
+    maxsize = l.maxsize;
     listp = new T[maxsize];
     curlen = l.curlen;
-    for(int i=0;i<curlen;i++)
+    for (int i = 0; i < curlen; i++)
     {
-        listp[i]=l.listp[i];
+        listp[i] = l.listp[i];
     }
     return *this;
 }
@@ -90,13 +104,13 @@ void List<T>::upscaling()
 }
 
 template <class T>
-bool List<T>::is_empty()
+bool List<T>::is_empty() const
 {
     return (curlen == 0);
 }
 
 template <class T>
-int List<T>::length()
+int List<T>::length() const
 {
     return curlen;
 }
@@ -113,7 +127,7 @@ void List<T>::append(const T &value)
 }
 
 template <class T>
-void List<T>::insert(int p,const T &value)
+void List<T>::insert(int p, const T &value)
 {
     while (p >= maxsize || curlen == maxsize)
     {
@@ -140,7 +154,7 @@ void List<T>::insert(int p,const T &value)
 }
 
 template <class T>
-void List<T>::set_value(int p,const T &value)
+void List<T>::set_value(int p, const T &value)
 {
     while (p >= maxsize || curlen == maxsize)
     {
@@ -162,7 +176,7 @@ void List<T>::set_value(int p,const T &value)
 }
 
 template <class T>
-bool List<T>::get_value(int p, T &value)
+bool List<T>::get_value(int p, T &value) const
 {
     if (p < curlen)
     {
@@ -176,7 +190,7 @@ bool List<T>::get_value(int p, T &value)
 }
 
 template <class T>
-bool List<T>::find_value(int &p,const T &value)
+bool List<T>::find_value(int &p, const T &value) const
 {
     int i;
     for (i = 0; i < curlen && listp[i] != value; i++)
@@ -191,24 +205,24 @@ bool List<T>::find_value(int &p,const T &value)
 }
 
 template <class T>
-void List<T>::print(std::ostream& os)
+void List<T>::print(std::ostream &os) const
 {
-    os<<"[";
-    for(int i=0;i<length();i++)
+    os << "[";
+    for (int i = 0; i < length(); i++)
     {
-        if(i>0)
+        if (i > 0)
         {
-            os<<",";
+            os << ",";
         }
         T tmp;
-        get_value(i,tmp);
-        os<<tmp;
+        get_value(i, tmp);
+        os << tmp;
     }
-    os<<"]\n";
+    os << "]";
 }
 
 template <typename T>
-std::ostream& operator<<(std::ostream& os,List<T>& list)
+std::ostream &operator<<(std::ostream &os, const List<T> &list)
 {
     list.print(os);
     return os;

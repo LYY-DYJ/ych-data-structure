@@ -39,15 +39,16 @@ public:
     void print(std::ostream &os = std::cout) const;
 };
 
-class Polygon : Shape
+class Polygon :public Shape
 {
 protected:
     List<Point> _point_list;
 
 public:
+    Polygon();
     Polygon(const List<Point>& point_list);
+    Polygon(int n,const Point*);
     Polygon(const Polygon&);
-    ~Polygon();
     Polygon& operator=(const List<Point>& point_list);
     Polygon& operator=(const Polygon&);
     List<Point>& point_list();
