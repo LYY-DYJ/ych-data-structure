@@ -1,6 +1,6 @@
 #include<iostream>
 template <class T>
-class Arr_List
+class List
 {
 private:
     T *listp;
@@ -9,8 +9,8 @@ private:
     void upscaling();
 
 public:
-    Arr_List(int size);
-    ~Arr_List();
+    List(int size);
+    ~List();
     // 判断数列是否为空
     bool is_empty();
     // 返回数列的长度
@@ -27,11 +27,13 @@ public:
     bool get_value(int p, T &value);
     // 查找数列中的元素，如果有，返回1并通过参数返回位置，否则返回0
     bool find_value(int &p, T &value);
-    void show();
+    void print(std::ostream& os=std::cout);
+    template<typename TT>
+    friend std::ostream& operator<<(std::ostream& os, List<TT> &list);
 };
 
 template <class T>
-Arr_List<T>::Arr_List(int size)
+List<T>::List(int size)
 {
     maxsize = size;
     listp = new T[maxsize];
@@ -39,13 +41,13 @@ Arr_List<T>::Arr_List(int size)
 }
 
 template <class T>
-Arr_List<T>::~Arr_List()
+List<T>::~List()
 {
     delete[] listp;
 }
 
 template <class T>
-void Arr_List<T>::upscaling()
+void List<T>::upscaling()
 {
     T *new_listp;
     new_listp = new T[maxsize * 2];
@@ -59,19 +61,19 @@ void Arr_List<T>::upscaling()
 }
 
 template <class T>
-bool Arr_List<T>::is_empty()
+bool List<T>::is_empty()
 {
     return (curlen == 0);
 }
 
 template <class T>
-int Arr_List<T>::length()
+int List<T>::length()
 {
     return curlen;
 }
 
 template <class T>
-void Arr_List<T>::append(T &value)
+void List<T>::append(T &value)
 {
     if (curlen == maxsize)
     {
@@ -82,7 +84,7 @@ void Arr_List<T>::append(T &value)
 }
 
 template <class T>
-void Arr_List<T>::insert(int p, T &value)
+void List<T>::insert(int p, T &value)
 {
     while (p >= maxsize || curlen == maxsize)
     {
@@ -109,7 +111,7 @@ void Arr_List<T>::insert(int p, T &value)
 }
 
 template <class T>
-void Arr_List<T>::set_value(int p, T &value)
+void List<T>::set_value(int p, T &value)
 {
     while (p >= maxsize || curlen == maxsize)
     {
@@ -131,7 +133,7 @@ void Arr_List<T>::set_value(int p, T &value)
 }
 
 template <class T>
-bool Arr_List<T>::get_value(int p, T &value)
+bool List<T>::get_value(int p, T &value)
 {
     if (p < curlen)
     {
@@ -145,7 +147,7 @@ bool Arr_List<T>::get_value(int p, T &value)
 }
 
 template <class T>
-bool Arr_List<T>::find_value(int &p, T &value)
+bool List<T>::find_value(int &p, T &value)
 {
     int i;
     for (i = 0; i < curlen && listp[i] != value; i++)
@@ -160,19 +162,25 @@ bool Arr_List<T>::find_value(int &p, T &value)
 }
 
 template <class T>
-void Arr_List<T>::show()
+void List<T>::print(std::ostream& os)
 {
-    std::cout<<"[";
+    os<<"[";
     for(int i=0;i<length();i++)
     {
         if(i>0)
         {
-            std::cout<<",";
+            os<<",";
         }
         T tmp;
         get_value(i,tmp);
-        std::cout<<tmp;
+        os<<tmp;
     }
-    std::cout<<"]\n";
+    os<<"]\n";
 }
 
+template <typename T>
+std::ostream& operator<<(std::ostream& os,List<T>& list)
+{
+    list.print(os);
+    return os;
+}
