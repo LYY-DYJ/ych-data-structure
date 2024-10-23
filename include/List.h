@@ -1,4 +1,7 @@
+#ifndef LIST_H
+#define LIST_H
 #include <iostream>
+
 template <class T>
 class List
 {
@@ -216,7 +219,10 @@ void List<T>::print(std::ostream &os) const
         }
         T tmp;
         get_value(i, tmp);
-        os << tmp;
+        if constexpr (std::is_pointer_v<T>)
+            os << *tmp;
+        else
+            os << tmp;
     }
     os << "]";
 }
@@ -227,3 +233,5 @@ std::ostream &operator<<(std::ostream &os, const List<T> &list)
     list.print(os);
     return os;
 }
+
+#endif
