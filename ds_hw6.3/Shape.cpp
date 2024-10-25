@@ -36,7 +36,7 @@ double Circle::area() const { return M_PI * _radius * _radius; }
 double Circle::perimeter() const { return 2 * M_PI * _radius; }
 void Circle::print(std::ostream &os) const
 {
-    os << "{type:Circle,radius:" << _radius << ",center:" << _center << "}";
+    os << "{\"type\":\"Circle\",\"radius\":" << _radius << ",\"center\":" << _center << "}";
 }
 // Circle
 
@@ -56,6 +56,7 @@ Polygon &Polygon::operator=(const Polygon &p)
     return *this;
 }
 List<Shape::Point> &Polygon::point_list() { return _point_list; }
+List<Shape::Point> Polygon::point_list() const { return _point_list; }
 double Polygon::area() const
 {
     double area=0;
@@ -93,15 +94,50 @@ double Polygon::perimeter() const
 }
 void Polygon::print(std::ostream& os) const
 {
-    os<<"{type:Polygon,pointlist:"<<_point_list<<"}";
+    os<<"{\"type\":\"Polygon\",\"pointlist\":"<<_point_list<<"}";
 }
 // Polygon
 
 
 //Triangle
-Triangle::Triangle(const Point* p):Polygon(3,p){}
-void Triangle::print(std::ostream &os) const
+Triangle::Triangle(const Point* pt_list):_polygon(3,pt_list){}
+Triangle::Triangle(double base,double height)
 {
-    os<<"{type:Triangle,pointlist:"<<_point_list<<"}";
+    Point pt_list[]={Point(0,0),Point(base,0),Point(0,height)};
+    _polygon=Polygon(3,pt_list);
+}
+double Triangle::area()const{return _polygon.area();} 
+double Triangle::perimeter()const{return _polygon.perimeter();} 
+void Triangle::print(std::ostream& os) const
+{
+    
+    os<<"{\"type\":\"Triangle\",\"point_list\":"<<_polygon.point_list()<<"}";
 }
 //Triangle
+
+//Rectangle
+Rectangle::Rectangle(double width, double height)
+{
+    Point pt_list[]={Point(0,0),Point(width,0),Point(width,height),Point(0,height)};
+    _polygon=Polygon(4,pt_list);
+}
+List<Shape::Point> Rectangle::point_list() const { return _polygon.point_list(); }
+double Rectangle::area()const{return _polygon.area();} 
+double Rectangle::perimeter()const{return _polygon.perimeter();} 
+void Rectangle::print(std::ostream& os) const
+{
+    
+    os<<"{\"type\":\"Rectangle\",\"point_list\":"<<_polygon.point_list()<<"}";
+}
+//Rectangle
+
+//Square
+Square::Square(double side):_rect(side,side){}
+List<Shape::Point> Square::point_list() const { return _rect.point_list(); }
+double Square::area()const{return _rect.area();}
+double Square::perimeter()const{return _rect.perimeter();}
+void Square::print(std::ostream& os) const
+{
+    os<<"{\"type\":\"Square\",\"point_list\":"<<_rect.point_list()<<"}";
+}
+//Square
