@@ -31,6 +31,7 @@ public:
     void set_value(int p, const T &value);
     // 查询数列中位置p的元素
     bool get_value(int p, T &value) const;
+    T operator[](int i) const;
     // 查找数列中的元素，如果有，返回1并通过参数返回位置，否则返回0
     bool find_value(int &p, const T &value) const;
     // 打印列表
@@ -190,6 +191,14 @@ bool List<T>::get_value(int p, T &value) const
     {
         return 0;
     }
+}
+
+template<class T>
+T List<T>::operator[](int i) const
+{
+    T temp;
+    get_value(i,temp);
+    return temp;
 }
 
 template <class T>
