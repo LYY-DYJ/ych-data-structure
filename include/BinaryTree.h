@@ -9,12 +9,14 @@ public:
     BinaryTree<T> *left;
     BinaryTree<T> *right;
     BinaryTree();
-    void preorder_print();
-    void inorder_print();
-    void postorder_print();
-    int leaf_num();
-    int height();
-    void mirror();
+    static void preorder_print(BinaryTree<T> *root);
+    static void inorder_print(BinaryTree<T> *root);
+    static void postorder_print(BinaryTree<T> *root);
+    static int leaf_num(BinaryTree<T> *root);
+    static int height(BinaryTree<T> *root);
+    static void mirror(BinaryTree<T> *root);
+    static void extend(BinaryTree<T> *&root);
+    static void dumb_extend(BinaryTree<T> *&root);
     static BinaryTree<T> *create_from_preorder_inorder(List<T> preorder, List<T> inorder);
 };
 
@@ -26,56 +28,97 @@ BinaryTree<T>::BinaryTree()
 }
 
 template <class T>
-void BinaryTree<T>::preorder_print()
+void BinaryTree<T>::preorder_print(BinaryTree<T> *root)
 {
-    std::cout<<value<<" ";
-    if(left!=nullptr)
-        left->preorder_print();
-    if(right!=nullptr)
-        right->preorder_print();
+    if (root == nullptr)
+        return;
+    std::cout << root->value << " ";
+    preorder_print(root->left);
+    preorder_print(root->right);
 }
 
 template <class T>
-int BinaryTree<T>::leaf_num()
+void BinaryTree<T>::inorder_print(BinaryTree<T> *root)
 {
-    if (left == nullptr && right == nullptr)
-        return 1;
-    else if (left == nullptr)
-        return right->leaf_num();
-    else if (right == nullptr)
-        return left->leaf_num();
-    else
-        return left->leaf_num() + right->leaf_num();
+    if (root == nullptr)
+        return;
+    inorder_print(root->left);
+    std::cout << root->value << " ";
+    inorder_print(root->right);
 }
 
 template <class T>
-int BinaryTree<T>::height()
+void BinaryTree<T>::postorder_print(BinaryTree<T> *root)
 {
-    if (left == nullptr && right == nullptr)
+    if (root == nullptr)
+        return;
+    postorder_print(root->left);
+    postorder_print(root->right);
+    std::cout << root->value << " ";
+}
+
+template <class T>
+int BinaryTree<T>::leaf_num(BinaryTree<T> *root)
+{
+    if (root == nullptr)
+        return 0;
+    if (root->left == nullptr && root->right == nullptr)
         return 1;
-    else if (left == nullptr)
-        return right->height() + 1;
-    else if (right == nullptr)
-        return left->height() + 1;
-    else
+    return leaf_num(root->left) + leaf_num(root->right);
+}
+
+template <class T>
+int BinaryTree<T>::height(BinaryTree<T> *root)
+{
+    if (root == nullptr)
+        return 0;
+    int l_h = height(root->left);
+    int r_h = height(root->right);
+    return (l_h > r_h ? l_h : r_h) + 1;
+}
+
+template <class T>
+void BinaryTree<T>::mirror(BinaryTree<T> *root)
+{
+    if(root==nullptr)
+        return;
+    mirror(root->left);
+    mirror(root->right);
+    BinaryTree<T> *temp;
+    temp = root->left;
+    root->left = root->right;
+    root->right = temp;
+}
+template <class T>
+void BinaryTree<T>::extend(BinaryTree<T> *&root)
+{
+    if(root==nullptr)
     {
-        int l_h = left->height();
-        int r_h = right->height();
-        return (l_h > r_h ? l_h : r_h) + 1;
+        root = new BinaryTree;
+        root->value='#';
+        return;
     }
+    extend(root->left);
+    extend(root->right);
 }
 
 template <class T>
-void BinaryTree<T>::mirror()
+void BinaryTree<T>::dumb_extend(BinaryTree<T> *&root)
 {
-    if(left!=nullptr)
-        left->mirror();
-    if(right!=nullptr)
-        right->mirror();
-    BinaryTree<T>* temp;
-    temp=left;
-    left=right;
-    right=temp;
+    if(root==nullptr)
+        return;
+    if(root->left==nullptr)
+    {
+        root->left = new BinaryTree;
+        root->left->value='#';
+        return;
+    }
+    if(root->right==nullptr)
+    {
+        root->right = new BinaryTree;
+        root->right->value='#';
+        return;
+    }
 }
 
 template <class T>
