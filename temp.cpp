@@ -1,10 +1,17 @@
-#include<stdio.h>
+#include <stdio.h>
+#include <vector>
+template<class T>
+class something
+{
+    public:
+        T i;
+        int f(int);
+};
 
 int main()
 {
-    int a=1;
-    int *p;
-    p=&a;
-    *p=2;
-    printf("%d\n",a);
+    something<int> a;
+    a.i=1;
+    std::vector<something<int>> list;
+    list[0].i;
 }
