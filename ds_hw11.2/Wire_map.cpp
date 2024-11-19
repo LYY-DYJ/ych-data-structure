@@ -11,8 +11,6 @@ int Wire_map::find(int i)
         return i;
     int root = find(node_list[i].parent);
     node_list[i].parent = root;
-    node_list[root].childs.push_back(i);
-    node_list[root].tree_size += 1;
     return root;
 }
 
@@ -24,23 +22,6 @@ bool Wire_map::different(int i, int j)
 void Wire_map::attach(int i, int j)
 {
     node_list[i].parent = j;
-    node_list[j].childs.push_back(i);
-    node_list[j].tree_size += node_list[i].tree_size;
-}
-
-void Wire_map::unian(int i, int j)
-{
-    if (different(i, j))
-    {
-        if (node_list[i].tree_size < node_list[j].tree_size)
-        {
-            attach(i, j);
-        }
-        else
-        {
-            attach(j, i);
-        }
-    }
 }
 
 bool Wire_map::overlap(Rect rect1, Rect rect2)
