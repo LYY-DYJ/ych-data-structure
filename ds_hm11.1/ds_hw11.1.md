@@ -1,3 +1,9 @@
+# DS_HW_11.1 #
+## 实现 ##
+### BinaryTree.h ###
+前序遍历是preorder_print,中序遍历是inorder_print,后序遍历是postorder_print，从前序遍历和中序遍历生成二叉树是create_from_preorder_inorder
+将所有空节点nullptr换成("#",nullptr,nullptr)，是extend,将除空树以外的空节点如此替换是dumb_extend
+```cpp
 #include <iostream>
 #include "List.h"
 
@@ -17,7 +23,6 @@ public:
     static void mirror(BinaryTree<T> *root);
     static void extend(BinaryTree<T> *&root);
     static void dumb_extend(BinaryTree<T> *&root);
-    static bool compare(BinaryTree<T>*,BinaryTree<T>*);
     static BinaryTree<T> *create_from_preorder_inorder(List<T> preorder, List<T> inorder);
 };
 
@@ -59,38 +64,6 @@ void BinaryTree<T>::postorder_print(BinaryTree<T> *root)
 }
 
 template <class T>
-int BinaryTree<T>::leaf_num(BinaryTree<T> *root)
-{
-    if (root == nullptr)
-        return 0;
-    if (root->left == nullptr && root->right == nullptr)
-        return 1;
-    return leaf_num(root->left) + leaf_num(root->right);
-}
-
-template <class T>
-int BinaryTree<T>::height(BinaryTree<T> *root)
-{
-    if (root == nullptr)
-        return 0;
-    int l_h = height(root->left);
-    int r_h = height(root->right);
-    return (l_h > r_h ? l_h : r_h) + 1;
-}
-
-template <class T>
-void BinaryTree<T>::mirror(BinaryTree<T> *root)
-{
-    if(root==nullptr)
-        return;
-    mirror(root->left);
-    mirror(root->right);
-    BinaryTree<T> *temp;
-    temp = root->left;
-    root->left = root->right;
-    root->right = temp;
-}
-template <class T>
 void BinaryTree<T>::extend(BinaryTree<T> *&root)
 {
     if(root==nullptr)
@@ -123,16 +96,6 @@ void BinaryTree<T>::dumb_extend(BinaryTree<T> *&root)
 }
 
 template <class T>
-bool BinaryTree<T>::compare(BinaryTree<T>* a,BinaryTree<T>* b)
-{
-    if(a==b)
-        return 1;
-    if((a==nullptr&&b!=nullptr)||(a!=nullptr&&b==nullptr))
-        return 0;
-    return (a->value==b->value)&&(compare(a->left,b->left))&&(compare(a->right,b->right));
-}
-
-template <class T>
 BinaryTree<T> *BinaryTree<T>::create_from_preorder_inorder(List<T> preorder, List<T> inorder)
 {
     BinaryTree<T> *root;
@@ -158,3 +121,55 @@ BinaryTree<T> *BinaryTree<T>::create_from_preorder_inorder(List<T> preorder, Lis
     root->right = create_from_preorder_inorder(right_preorder, right_inorder);
     return root;
 }
+```
+## 测试 ##
+先测试空树的两种extend，再通过循环测试不同树的通过前序和中序遍历创建,并分别三种方式遍历和扩展后遍历。
+```cpp
+#include <string.h>
+#include "BinaryTree.h"
+
+int main()
+{
+    char preorder[100], inorder[100];
+    BinaryTree<char> *root = nullptr;
+    BinaryTree<char>::extend(root);
+    printf("preorder:");
+    BinaryTree<char>::preorder_print(root);
+    printf("\ninorder:");
+    BinaryTree<char>::inorder_print(root);
+    printf("\npostorder:");
+    BinaryTree<char>::postorder_print(root);
+    printf("\n\n");
+    root = nullptr;
+    BinaryTree<char>::dumb_extend(root);
+    printf("preorder:");
+    BinaryTree<char>::preorder_print(root);
+    printf("\ninorder:");
+    BinaryTree<char>::inorder_print(root);
+    printf("\npostorder:");
+    BinaryTree<char>::postorder_print(root);
+    printf("\n\n");
+    while (scanf("%s", preorder) && scanf("%s", inorder))
+    {
+        BinaryTree<char> *root = BinaryTree<char>::create_from_preorder_inorder(List<char>(strlen(preorder), preorder), List<char>(strlen(inorder), inorder));
+        printf("preorder:");
+        BinaryTree<char>::preorder_print(root);
+        printf("\ninorder:");
+        BinaryTree<char>::inorder_print(root);
+        printf("\npostorder:");
+        BinaryTree<char>::postorder_print(root);
+        printf("\n");
+        BinaryTree<char>::extend(root);
+        printf("preorder:");
+        BinaryTree<char>::preorder_print(root);
+        printf("\ninorder:");
+        BinaryTree<char>::inorder_print(root);
+        printf("\npostorder:");
+        BinaryTree<char>::postorder_print(root);
+        printf("\n\n");
+    }
+    return 0;
+}
+```
+## 结果 ##
+![alt text](image.png)
